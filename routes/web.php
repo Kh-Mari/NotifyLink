@@ -6,7 +6,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\PublicController;
 use App\Http\Controllers\LicenseAdminController;
-
+use App\Http\Controllers\LanguageController;
 // Home route
 Route::get('/', function () {
     if (auth()->check()) {
@@ -46,9 +46,12 @@ Route::middleware('auth')->prefix('user')->name('user.')->group(function () {
     Route::get('/edit-button/{button}', [UserController::class, 'editButton'])->name('edit-button');
     Route::post('/edit-button/{button}', [UserController::class, 'updateButton'])->name('update-button');
     Route::post('/reorder-buttons', [UserController::class, 'reorderButtons'])->name('reorder-buttons');
+    Route::get('/language/{locale}', [LanguageController::class, 'switchLanguage'])->name('language.switch');
+
 });
 
 // Public routes
 Route::get('/u/{slug}', [PublicController::class, 'showPublicPage'])->name('public.page');
 Route::get('/click/{button}', [PublicController::class, 'trackClick'])->name('track-click');
 Route::get('/uploads/{filename}', [PublicController::class, 'serveUpload'])->name('serve-upload');
+Route::get('/language/{locale}', [LanguageController::class, 'switchLanguage'])->name('language.switch');

@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'User Dashboard')
+@section('title', t('dashboard'))
 
 @section('content')
 <style>
@@ -8,6 +8,7 @@
         max-width: 1200px;
         margin: 0 auto;
         padding: 1rem;
+        direction: {{ isRTL() ? 'rtl' : 'ltr' }};
     }
 
     .card {
@@ -38,7 +39,7 @@
     }
 
     .card-header i {
-        margin-right: 0.75rem;
+        margin-{{ isRTL() ? 'left' : 'right' }}: 0.75rem;
         color: #3b82f6;
         font-size: 1.25rem;
     }
@@ -90,7 +91,7 @@
     }
 
     .form-group label i {
-        margin-right: 0.5rem;
+        margin-{{ isRTL() ? 'left' : 'right' }}: 0.5rem;
         color: #3b82f6;
     }
 
@@ -131,7 +132,7 @@
         border-radius: 20px;
         font-size: 0.875rem;
         font-weight: 600;
-        margin-left: 0.5rem;
+        margin-{{ isRTL() ? 'right' : 'left' }}: 0.5rem;
     }
 
     .file-input-wrapper {
@@ -167,7 +168,7 @@
     }
 
     .file-input-label i {
-        margin-right: 0.75rem;
+        margin-{{ isRTL() ? 'left' : 'right' }}: 0.75rem;
         color: #3b82f6;
         font-size: 1.5rem;
     }
@@ -244,7 +245,7 @@
     }
 
     .container-section h5 i {
-        margin-right: 0.75rem;
+        margin-{{ isRTL() ? 'left' : 'right' }}: 0.75rem;
         color: #0ea5e9;
     }
 
@@ -409,10 +410,10 @@
     }
 
     .button-item.promotion-item::before {
-        content: '🔥 PROMOTION 🔥';
+        content: '🔥 {{ t('promotion') }} 🔥';
         position: absolute;
         top: -10px;
-        left: 10px;
+        {{ isRTL() ? 'right' : 'left' }}: 10px;
         background: linear-gradient(135deg, #ff1744, #d50000);
         color: white;
         font-size: 0.7rem;
@@ -422,35 +423,6 @@
         z-index: 10;
     }
 
-    .sortable-ghost {
-        opacity: 0.3 !important;
-        background: #f1f5f9 !important;
-        border: 2px dashed #3b82f6 !important;
-        transform: scale(0.95);
-    }
-    
-    .sortable-chosen {
-        cursor: grabbing !important;
-        transform: scale(1.02);
-        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15) !important;
-        z-index: 1000;
-    }
-    
-    .sortable-drag {
-        opacity: 0.8;
-        transform: rotate(3deg) scale(1.02);
-        box-shadow: 0 12px 32px rgba(0, 0, 0, 0.2) !important;
-        z-index: 1001;
-    }
-    
-    body.dragging {
-        cursor: grabbing !important;
-    }
-    
-    body.dragging * {
-        cursor: grabbing !important;
-    }
-
     .promotion-badge {
         background: linear-gradient(135deg, #ff1744, #d50000);
         color: white;
@@ -458,7 +430,7 @@
         font-weight: 900;
         padding: 4px 10px;
         border-radius: 12px;
-        margin-left: 0.5rem;
+        margin-{{ isRTL() ? 'right' : 'left' }}: 0.5rem;
     }
 
     .discount-badge-small {
@@ -468,13 +440,13 @@
         font-weight: 900;
         padding: 4px 10px;
         border-radius: 12px;
-        margin-left: 0.5rem;
+        margin-{{ isRTL() ? 'right' : 'left' }}: 0.5rem;
     }
 
     .drag-handle {
         color: #9ca3af;
         font-size: 1.25rem;
-        margin-right: 1rem;
+        margin-{{ isRTL() ? 'left' : 'right' }}: 1rem;
         cursor: grab;
         touch-action: none;
         transition: all 0.2s ease;
@@ -497,15 +469,6 @@
     .drag-handle:active {
         cursor: grabbing;
     }
-    
-    .sortable-fallback {
-        opacity: 0.8;
-        background: white !important;
-        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2) !important;
-        border: 2px solid #3b82f6 !important;
-        transform: rotate(5deg);
-        z-index: 1000;
-    }
 
     .button-info {
         display: flex;
@@ -515,7 +478,7 @@
     }
 
     .button-info i {
-        margin-right: 1rem;
+        margin-{{ isRTL() ? 'left' : 'right' }}: 1rem;
         font-size: 1.5rem;
         color: #3b82f6;
         min-width: 30px;
@@ -653,7 +616,7 @@
     }
 
     .alert i {
-        margin-right: 0.75rem;
+        margin-{{ isRTL() ? 'left' : 'right' }}: 0.75rem;
         font-size: 1.25rem;
     }
 
@@ -716,22 +679,29 @@
         color: #ef4444;
     }
 
-    /* Enhanced Mobile Responsive Styles */
-    @media (max-width: 1024px) {
-        .form-grid {
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 1.5rem;
-        }
-        
-        .button-form-grid {
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-        }
-        
-        .button-presets {
-            grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
-        }
+    /* Sortable styles */
+    .sortable-ghost {
+        opacity: 0.3 !important;
+        background: #f1f5f9 !important;
+        border: 2px dashed #3b82f6 !important;
+        transform: scale(0.95);
+    }
+    
+    .sortable-chosen {
+        cursor: grabbing !important;
+        transform: scale(1.02);
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15) !important;
+        z-index: 1000;
+    }
+    
+    .sortable-drag {
+        opacity: 0.8;
+        transform: rotate(3deg) scale(1.02);
+        box-shadow: 0 12px 32px rgba(0, 0, 0, 0.2) !important;
+        z-index: 1001;
     }
 
+    /* Responsive */
     @media (max-width: 768px) {
         .dashboard-container {
             padding: 0.75rem;
@@ -749,28 +719,9 @@
             margin-bottom: 1.5rem;
         }
 
-        .card-header h4 {
-            font-size: 1.25rem;
-        }
-
-        .form-grid {
+        .form-grid, .button-form-grid {
             grid-template-columns: 1fr;
             gap: 1.5rem;
-        }
-
-        .button-form-grid {
-            grid-template-columns: 1fr;
-            gap: 1rem;
-        }
-
-        .style-selector {
-            grid-template-columns: repeat(3, 1fr);
-            gap: 0.75rem;
-        }
-
-        .style-option {
-            padding: 0.75rem 0.5rem;
-            font-size: 0.875rem;
         }
 
         .button-presets {
@@ -778,31 +729,9 @@
             gap: 0.75rem;
         }
 
-        .preset-button {
-            padding: 1rem 0.5rem;
-            min-height: 80px;
-        }
-
-        .preset-button i {
-            font-size: 1.5rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .preset-button span {
-            font-size: 0.75rem;
-        }
-
         .analytics-grid {
             grid-template-columns: 1fr;
             gap: 1rem;
-        }
-
-        .stat-card {
-            padding: 1.25rem;
-        }
-
-        .stat-number {
-            font-size: 1.75rem;
         }
 
         .button-item {
@@ -810,17 +739,12 @@
             align-items: stretch;
             gap: 1rem;
             padding: 1.25rem;
-            cursor: grab;
-        }
-
-        .button-item:active {
-            cursor: grabbing;
         }
 
         .drag-handle {
             position: absolute;
             top: 8px;
-            right: 8px;
+            {{ isRTL() ? 'left' : 'right' }}: 8px;
             margin: 0;
             min-width: 32px;
             height: 32px;
@@ -832,7 +756,6 @@
         .button-info {
             width: 100%;
             margin-bottom: 0.5rem;
-            pointer-events: none;
         }
 
         .button-actions {
@@ -840,7 +763,6 @@
             justify-content: flex-start;
             flex-wrap: wrap;
             gap: 0.5rem;
-            pointer-events: auto;
         }
 
         .btn {
@@ -850,296 +772,53 @@
             min-width: 80px;
             justify-content: center;
         }
-
-        .form-control {
-            padding: 0.875rem;
-            font-size: 16px; /* Prevents zoom on iOS */
-        }
-
-        .color-input {
-            height: 50px;
-        }
-
-        .file-input-label {
-            padding: 1rem;
-            min-height: 80px;
-        }
-
-        .preview-image {
-            width: 100px;
-            height: 100px;
-        }
-
-        .container-section, .button-form {
-            padding: 1.5rem;
-        }
-
-        .modal-content {
-            margin: 2% auto;
-            padding: 1.5rem;
-            width: 95%;
-            max-height: 95vh;
-            overflow-y: auto;
-        }
-
-        .promotion-settings {
-            padding: 1rem;
-        }
-
-        /* Touch-friendly drag indicators */
-        .button-item::after {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 8px;
-            transform: translateY(-50%);
-            width: 4px;
-            height: 20px;
-            background: repeating-linear-gradient(
-                to bottom,
-                #d1d5db 0px,
-                #d1d5db 2px,
-                transparent 2px,
-                transparent 4px
-            );
-            border-radius: 2px;
-        }
     }
 
-    @media (max-width: 480px) {
-        .dashboard-container {
-            padding: 0.5rem;
-        }
-
-        .card {
-            padding: 1rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .card-header h4 {
-            font-size: 1.125rem;
-        }
-
-        .card-header i {
-            font-size: 1rem;
-            margin-right: 0.5rem;
-        }
-
-        .analytics-grid {
-            gap: 0.75rem;
-        }
-
-        .stat-card {
-            padding: 1rem;
-        }
-
-        .stat-number {
-            font-size: 1.5rem;
-        }
-
-        .stat-label {
-            font-size: 0.8rem;
-        }
-
-        .button-presets {
-            grid-template-columns: repeat(2, 1fr);
-            gap: 0.5rem;
-        }
-
-        .preset-button {
-            padding: 0.75rem 0.25rem;
-            min-height: 70px;
-        }
-
-        .preset-button i {
-            font-size: 1.25rem;
-            margin-bottom: 0.25rem;
-        }
-
-        .preset-button span {
-            font-size: 0.7rem;
-        }
-
-        .button-item {
-            padding: 1rem;
-        }
-
-        .button-label {
-            font-size: 1rem;
-        }
-
-        .button-url {
-            font-size: 0.8rem;
-        }
-
-        .btn {
-            padding: 0.4rem 0.6rem;
-            font-size: 0.75rem;
-            min-width: 70px;
-        }
-
-        .drag-handle {
-            min-width: 28px;
-            height: 28px;
-            top: 6px;
-            right: 6px;
-        }
-
-        .form-control {
-            padding: 0.75rem;
-        }
-
-        .style-option {
-            padding: 0.5rem 0.25rem;
-        }
-
-        .container-section, .button-form {
-            padding: 1rem;
-        }
-
-        .promotion-settings {
-            padding: 0.75rem;
-        }
-
-        .modal-content {
-            padding: 1rem;
-            width: 98%;
-        }
-
-        /* Smaller touch targets adjustment */
-        .checkbox-group input[type="checkbox"] {
-            transform: scale(1.5);
-            margin-right: 0.5rem;
-        }
-
-        .range-input {
-            height: 40px;
-        }
+    /* RTL specific adjustments */
+    .rtl .card-header i {
+        margin-left: 0.75rem;
+        margin-right: 0;
     }
 
-    /* Touch device optimizations */
-    @media (hover: none) and (pointer: coarse) {
-        .button-item {
-            cursor: grab;
-            user-select: none;
-            -webkit-user-select: none;
-        }
-
-        .button-item:active {
-            cursor: grabbing;
-        }
-
-        .drag-handle {
-            background: rgba(59, 130, 246, 0.15);
-            color: #3b82f6;
-        }
-
-        .preset-button:hover,
-        .style-option:hover,
-        .btn:hover {
-            transform: none;
-        }
-
-        .preset-button:active,
-        .style-option:active {
-            transform: scale(0.95);
-        }
-
-        .btn:active {
-            transform: scale(0.95);
-        }
+    .rtl .form-group label i {
+        margin-left: 0.5rem;
+        margin-right: 0;
     }
 
-    /* High DPI displays */
-    @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
-        .preview-image {
-            image-rendering: -webkit-optimize-contrast;
-            image-rendering: crisp-edges;
-        }
+    .rtl .file-input-label i {
+        margin-left: 0.75rem;
+        margin-right: 0;
     }
 
-    /* Landscape mobile optimizations */
-    @media (max-width: 768px) and (orientation: landscape) {
-        .analytics-grid {
-            grid-template-columns: repeat(3, 1fr);
-        }
-
-        .button-presets {
-            grid-template-columns: repeat(6, 1fr);
-        }
-
-        .style-selector {
-            grid-template-columns: repeat(3, 1fr);
-        }
-
-        .modal-content {
-            max-height: 90vh;
-            overflow-y: auto;
-        }
+    .rtl .drag-handle {
+        margin-left: 1rem;
+        margin-right: 0;
     }
 
-    /* Animation keyframes */
+    .rtl .button-info i {
+        margin-left: 1rem;
+        margin-right: 0;
+    }
+
+    .rtl .alert i {
+        margin-left: 0.75rem;
+        margin-right: 0;
+    }
+
+    .rtl .promotion-badge,
+    .rtl .discount-badge-small {
+        margin-left: 0;
+        margin-right: 0.5rem;
+    }
+
+    .rtl .range-value {
+        margin-left: 0;
+        margin-right: 0.5rem;
+    }
+
     @keyframes promotionGlow {
         0%, 100% { box-shadow: 0 0 5px rgba(255, 23, 68, 0.5); }
         50% { box-shadow: 0 0 20px rgba(255, 23, 68, 0.8); }
-    }
-
-    /* Sortable specific enhancements */
-    .sortable-ghost {
-        opacity: 0.4;
-        background: #f1f5f9 !important;
-        transform: rotate(2deg) scale(0.95);
-        border: 2px dashed #3b82f6 !important;
-    }
-    
-    .sortable-chosen {
-        cursor: grabbing !important;
-        z-index: 1000;
-        transform: scale(1.02);
-        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2) !important;
-    }
-    
-    .sortable-drag {
-        opacity: 0.9;
-        transform: rotate(5deg) scale(1.05);
-        box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3) !important;
-        z-index: 1001;
-    }
-
-    /* Focus states for accessibility */
-    .button-item:focus {
-        outline: 2px solid #3b82f6;
-        outline-offset: 2px;
-    }
-
-    .btn:focus {
-        outline: 2px solid #3b82f6;
-        outline-offset: 2px;
-    }
-
-    /* Loading states */
-    .loading {
-        opacity: 0.6;
-        pointer-events: none;
-        position: relative;
-    }
-
-    .loading::after {
-        content: '';
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        width: 20px;
-        height: 20px;
-        margin: -10px 0 0 -10px;
-        border: 2px solid #3b82f6;
-        border-radius: 50%;
-        border-top-color: transparent;
-        animation: spin 1s linear infinite;
-    }
-
-    @keyframes spin {
-        to { transform: rotate(360deg); }
     }
 </style>
 
@@ -1147,30 +826,30 @@
     @if(!$link)
         <div class="alert alert-info">
             <i class="fas fa-info-circle"></i>
-            <span>Contact your administrator to assign you a page slug to get started.</span>
+            <span>{{ t('contact_admin') }}</span>
         </div>
     @else
         <!-- Analytics Card -->
         <div class="card">
             <div class="card-header">
-                <h4><i class="fas fa-chart-line"></i>Analytics</h4>
+                <h4><i class="fas fa-chart-line"></i>{{ t('analytics') }}</h4>
                 <a href="{{ route('public.page', $link->slug) }}" class="btn btn-info" target="_blank">
-                    <i class="fas fa-external-link-alt"></i>View Page
+                    <i class="fas fa-external-link-alt"></i>{{ t('view_page') }}
                 </a>
             </div>
             
             <div class="analytics-grid">
                 <div class="stat-card">
                     <div class="stat-number">{{ $link->visit_count ?? 0 }}</div>
-                    <div class="stat-label">Total Visits</div>
+                    <div class="stat-label">{{ t('total_visits') }}</div>
                 </div>
                 <div class="stat-card">
                     <div class="stat-number">{{ $link->buttons->count() }}</div>
-                    <div class="stat-label">Active Buttons</div>
+                    <div class="stat-label">{{ t('active_buttons') }}</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-number">{{ $link->total_clicks ?? 0 }}</div>
-                    <div class="stat-label">Total Clicks</div>
+                    <div class="stat-number">{{ $link->buttons->sum('click_count') ?? 0 }}</div>
+                    <div class="stat-label">{{ t('total_clicks') }}</div>
                 </div>
             </div>
         </div>
@@ -1178,7 +857,7 @@
         <!-- Settings Card -->
         <div class="card">
             <div class="card-header">
-                <h4><i class="fas fa-cog"></i>Customize Your Page</h4>
+                <h4><i class="fas fa-cog"></i>{{ t('customize_page') }}</h4>
             </div>
             
             <form method="POST" action="{{ route('user.update-settings') }}" enctype="multipart/form-data">
@@ -1187,57 +866,57 @@
                 <!-- Profile & Logo Section -->
                 <div style="background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%); padding: 2rem; border-radius: 16px; margin-bottom: 2rem; border: 2px solid #e2e8f0;">
                     <h5 style="color: #1e293b; font-weight: 700; margin-bottom: 1.5rem; display: flex; align-items: center; font-size: 1.25rem;">
-                        <i class="fas fa-user-circle" style="margin-right: 0.75rem; color: #3b82f6;"></i>Profile & Logo
+                        <i class="fas fa-user-circle" style="margin-{{ isRTL() ? 'left' : 'right' }}: 0.75rem; color: #3b82f6;"></i>{{ t('profile_logo') }}
                     </h5>
                     
                     <div class="form-grid">
                         <div class="form-group">
-                            <label><i class="fas fa-image"></i>Profile Logo</label>
+                            <label><i class="fas fa-image"></i>{{ t('choose_logo') }}</label>
                             <div class="file-input-wrapper">
                                 <input type="file" name="logo" class="file-input" accept="image/*">
                                 <div class="file-input-label">
                                     <i class="fas fa-upload"></i>
-                                    <span>Choose Logo Image</span>
+                                    <span>{{ t('choose_logo') }}</span>
                                 </div>
                             </div>
                             @if($link->logo_filename)
-                                <img src="{{ route('serve-upload', $link->logo_filename) }}" class="preview-image" alt="Current Logo">
+                                <img src="{{ route('serve-upload', $link->logo_filename) }}" class="preview-image" alt="{{ t('choose_logo') }}">
                             @endif
                         </div>
                         
                         <div class="form-group">
-                            <label><i class="fas fa-shapes"></i>Logo Shape</label>
+                            <label><i class="fas fa-shapes"></i>{{ t('logo_shape') }}</label>
                             <div class="style-selector">
                                 <div class="style-option {{ ($link->logo_shape ?? 'circle') == 'circle' ? 'active' : '' }}" data-logo-shape="circle">
                                     <div style="width: 40px; height: 40px; background: #3b82f6; border-radius: 50%; margin: 0 auto;"></div>
-                                    <small style="margin-top: 0.5rem; display: block;">Circle</small>
+                                    <small style="margin-top: 0.5rem; display: block;">{{ t('circle') }}</small>
                                 </div>
                                 <div class="style-option {{ ($link->logo_shape ?? 'circle') == 'rounded' ? 'active' : '' }}" data-logo-shape="rounded">
                                     <div style="width: 40px; height: 40px; background: #3b82f6; border-radius: 12px; margin: 0 auto;"></div>
-                                    <small style="margin-top: 0.5rem; display: block;">Rounded</small>
+                                    <small style="margin-top: 0.5rem; display: block;">{{ t('rounded') }}</small>
                                 </div>
                                 <div class="style-option {{ ($link->logo_shape ?? 'circle') == 'square' ? 'active' : '' }}" data-logo-shape="square">
                                     <div style="width: 40px; height: 40px; background: #3b82f6; border-radius: 4px; margin: 0 auto;"></div>
-                                    <small style="margin-top: 0.5rem; display: block;">Square</small>
+                                    <small style="margin-top: 0.5rem; display: block;">{{ t('square') }}</small>
                                 </div>
                             </div>
                             <input type="hidden" name="logo_shape" id="logo_shape" value="{{ $link->logo_shape ?? 'circle' }}">
                         </div>
                         
                         <div class="form-group">
-                            <label><i class="fas fa-expand-arrows-alt"></i>Logo Size</label>
+                            <label><i class="fas fa-expand-arrows-alt"></i>{{ t('logo_size') }}</label>
                             <div class="style-selector">
                                 <div class="style-option {{ ($link->logo_size ?? 'medium') == 'small' ? 'active' : '' }}" data-logo-size="small">
                                     <div style="width: 20px; height: 20px; background: #3b82f6; border-radius: 50%; margin: 0 auto;"></div>
-                                    <small style="margin-top: 0.5rem; display: block;">Small</small>
+                                    <small style="margin-top: 0.5rem; display: block;">{{ t('small') }}</small>
                                 </div>
                                 <div class="style-option {{ ($link->logo_size ?? 'medium') == 'medium' ? 'active' : '' }}" data-logo-size="medium">
                                     <div style="width: 30px; height: 30px; background: #3b82f6; border-radius: 50%; margin: 0 auto;"></div>
-                                    <small style="margin-top: 0.5rem; display: block;">Medium</small>
+                                    <small style="margin-top: 0.5rem; display: block;">{{ t('medium') }}</small>
                                 </div>
                                 <div class="style-option {{ ($link->logo_size ?? 'medium') == 'large' ? 'active' : '' }}" data-logo-size="large">
                                     <div style="width: 40px; height: 40px; background: #3b82f6; border-radius: 50%; margin: 0 auto;"></div>
-                                    <small style="margin-top: 0.5rem; display: block;">Large</small>
+                                    <small style="margin-top: 0.5rem; display: block;">{{ t('large') }}</small>
                                 </div>
                             </div>
                             <input type="hidden" name="logo_size" id="logo_size" value="{{ $link->logo_size ?? 'medium' }}">
@@ -1248,31 +927,31 @@
                 <!-- Button Styling Section -->
                 <div style="background: linear-gradient(135deg, #fef3c7 0%, #fcd34d 100%); padding: 2rem; border-radius: 16px; margin-bottom: 2rem; border: 2px solid #fbbf24;">
                     <h5 style="color: #92400e; font-weight: 700; margin-bottom: 1.5rem; display: flex; align-items: center; font-size: 1.25rem;">
-                        <i class="fas fa-mouse-pointer" style="margin-right: 0.75rem; color: #d97706;"></i>Button Styling
+                        <i class="fas fa-mouse-pointer" style="margin-{{ isRTL() ? 'left' : 'right' }}: 0.75rem; color: #d97706;"></i>{{ t('button_styling') }}
                     </h5>
                     
                     <div class="form-grid">
                         <div class="form-group">
-                            <label><i class="fas fa-shapes"></i>Button Style</label>
+                            <label><i class="fas fa-shapes"></i>{{ t('button_style') }}</label>
                             <div class="style-selector">
                                 <div class="style-option {{ ($link->button_style ?? 'rounded') == 'rounded' ? 'active' : '' }}" data-style="rounded">
                                     <div style="width: 100%; height: 20px; background: #3b82f6; border-radius: 8px;"></div>
-                                    <small style="margin-top: 0.5rem; display: block;">Rounded</small>
+                                    <small style="margin-top: 0.5rem; display: block;">{{ t('rounded') }}</small>
                                 </div>
                                 <div class="style-option {{ ($link->button_style ?? 'rounded') == 'pill' ? 'active' : '' }}" data-style="pill">
                                     <div style="width: 100%; height: 20px; background: #3b82f6; border-radius: 20px;"></div>
-                                    <small style="margin-top: 0.5rem; display: block;">Pill</small>
+                                    <small style="margin-top: 0.5rem; display: block;">{{ t('pill') }}</small>
                                 </div>
                                 <div class="style-option {{ ($link->button_style ?? 'rounded') == 'square' ? 'active' : '' }}" data-style="square">
                                     <div style="width: 100%; height: 20px; background: #3b82f6; border-radius: 2px;"></div>
-                                    <small style="margin-top: 0.5rem; display: block;">Square</small>
+                                    <small style="margin-top: 0.5rem; display: block;">{{ t('square') }}</small>
                                 </div>
                             </div>
                             <input type="hidden" name="button_style" id="button_style" value="{{ $link->button_style ?? 'rounded' }}">
                         </div>
                         
                         <div class="form-group">
-                            <label><i class="fas fa-palette"></i>Button Color</label>
+                            <label><i class="fas fa-palette"></i>{{ t('button_color') }}</label>
                             <input type="color" name="button_color" class="color-input" value="{{ $link->button_color ?? '#3b82f6' }}">
                         </div>
                     </div>
@@ -1281,38 +960,38 @@
                 <!-- Background & Colors Section -->
                 <div style="background: linear-gradient(135deg, #e0e7ff 0%, #c7d2fe 100%); padding: 2rem; border-radius: 16px; margin-bottom: 2rem; border: 2px solid #a5b4fc;">
                     <h5 style="color: #3730a3; font-weight: 700; margin-bottom: 1.5rem; display: flex; align-items: center; font-size: 1.25rem;">
-                        <i class="fas fa-paint-brush" style="margin-right: 0.75rem; color: #6366f1;"></i>Background & Colors
+                        <i class="fas fa-paint-brush" style="margin-{{ isRTL() ? 'left' : 'right' }}: 0.75rem; color: #6366f1;"></i>{{ t('background_colors') }}
                     </h5>
                     
                     <div class="form-grid">
                         <div class="form-group">
-                            <label><i class="fas fa-image"></i>Background Image</label>
+                            <label><i class="fas fa-image"></i>{{ t('background_image') }}</label>
                             <div class="file-input-wrapper">
                                 <input type="file" name="background" class="file-input" accept="image/*">
                                 <div class="file-input-label">
                                     <i class="fas fa-upload"></i>
-                                    <span>Choose Background</span>
+                                    <span>{{ t('choose_background') }}</span>
                                 </div>
                             </div>
                             @if($link->background_filename)
-                                <img src="{{ route('serve-upload', $link->background_filename) }}" class="preview-image" alt="Current Background">
+                                <img src="{{ route('serve-upload', $link->background_filename) }}" class="preview-image" alt="{{ t('background_image') }}">
                             @endif
                         </div>
                         
                         <div class="form-group">
-                            <label><i class="fas fa-fill-drip"></i>Background Color</label>
+                            <label><i class="fas fa-fill-drip"></i>{{ t('background_color') }}</label>
                             <input type="color" name="background_color" class="color-input" value="{{ $link->background_color ?? '#ffffff' }}">
                         </div>
                         
                         <div class="form-group">
-                            <label><i class="fas fa-font"></i>Text Color</label>
+                            <label><i class="fas fa-font"></i>{{ t('text_color') }}</label>
                             <input type="color" name="text_color" class="color-input" value="{{ $link->text_color ?? '#333333' }}">
                         </div>
                         
                         <div class="form-group">
                             <label style="display: flex; align-items: center; font-weight: 600;">
-                                <input type="checkbox" name="use_background_image" {{ $link->use_background_image ? 'checked' : '' }} style="margin-right: 0.5rem; transform: scale(1.3);">
-                                Use background image instead of color
+                                <input type="checkbox" name="use_background_image" {{ $link->use_background_image ? 'checked' : '' }} style="margin-{{ isRTL() ? 'left' : 'right' }}: 0.5rem; transform: scale(1.3);">
+                                {{ t('use_background_image') }}
                             </label>
                         </div>
                     </div>
@@ -1320,52 +999,52 @@
 
                 <!-- Container Settings Section -->
                 <div class="container-section">
-                    <h5><i class="fas fa-square"></i>Container Settings</h5>
-                    <p style="margin-bottom: 1.5rem; color: #64748b;">Configure how the button container appears when using background images</p>
+                    <h5><i class="fas fa-square"></i>{{ t('container_settings') }}</h5>
+                    <p style="margin-bottom: 1.5rem; color: #64748b;">{{ t('enable_container_styling') }}</p>
                     
                     <div class="checkbox-group" style="margin-bottom: 2rem;">
                         <input type="checkbox" name="use_container_styling" id="use_container_styling" {{ $link->use_container_styling ? 'checked' : '' }}>
-                        <label for="use_container_styling"><strong>Enable container styling (recommended for background images)</strong></label>
+                        <label for="use_container_styling"><strong>{{ t('enable_container_styling') }}</strong></label>
                     </div>
 
                     <div class="form-grid" id="container-settings">
                         <div class="form-group">
-                            <label><i class="fas fa-fill"></i>Container Background</label>
+                            <label><i class="fas fa-fill"></i>{{ t('container_background') }}</label>
                             <input type="color" name="container_background" class="color-input" value="{{ $link->container_background ?? '#ffffff' }}">
                         </div>
                         
                         <div class="form-group">
-                            <label><i class="fas fa-border-style"></i>Border Color</label>
+                            <label><i class="fas fa-border-style"></i>{{ t('border_color') }}</label>
                             <input type="color" name="container_border_color" class="color-input" value="{{ $link->container_border_color ?? '#e5e7eb' }}">
                         </div>
                         
                         <div class="form-group">
-                            <label><i class="fas fa-border-style"></i>Border Width</label>
+                            <label><i class="fas fa-border-style"></i>{{ t('border_width') }}</label>
                             <input type="range" name="container_border_width" class="range-input" min="0" max="5" value="{{ $link->container_border_width ?? 1 }}" id="borderWidth">
                             <span class="range-value" id="borderWidthValue">{{ $link->container_border_width ?? 1 }}px</span>
                         </div>
                         
                         <div class="form-group">
-                            <label><i class="fas fa-square"></i>Border Radius</label>
+                            <label><i class="fas fa-square"></i>{{ t('border_radius') }}</label>
                             <input type="range" name="container_border_radius" class="range-input" min="0" max="50" value="{{ $link->container_border_radius ?? 20 }}" id="borderRadius">
                             <span class="range-value" id="borderRadiusValue">{{ $link->container_border_radius ?? 20 }}px</span>
                         </div>
                         
                         <div class="form-group">
-                            <label><i class="fas fa-adjust"></i>Opacity</label>
+                            <label><i class="fas fa-adjust"></i>{{ t('opacity') }}</label>
                             <input type="range" name="container_opacity" class="range-input" min="0" max="100" value="{{ $link->container_opacity ?? 95 }}" id="opacity">
                             <span class="range-value" id="opacityValue">{{ $link->container_opacity ?? 95 }}%</span>
                         </div>
                         
                         <div class="form-group">
-                            <label><i class="fas fa-magic"></i>Effects</label>
+                            <label><i class="fas fa-magic"></i>{{ t('effects') }}</label>
                             <div class="checkbox-group">
                                 <input type="checkbox" name="container_shadow" id="container_shadow" {{ $link->container_shadow ? 'checked' : '' }}>
-                                <label for="container_shadow">Drop shadow</label>
+                                <label for="container_shadow">{{ t('drop_shadow') }}</label>
                             </div>
                             <div class="checkbox-group">
                                 <input type="checkbox" name="container_blur" id="container_blur" {{ $link->container_blur ? 'checked' : '' }}>
-                                <label for="container_blur">Backdrop blur</label>
+                                <label for="container_blur">{{ t('backdrop_blur') }}</label>
                             </div>
                         </div>
                     </div>
@@ -1375,19 +1054,19 @@
                         <div class="preview-container" id="previewContainer">
                             <div style="width: 60px; height: 60px; background: #3b82f6; border-radius: 50%; margin: 0 auto 1rem; border: 3px solid rgba(255,255,255,0.8);"></div>
                             <h3 style="margin: 0 0 0.5rem; font-size: 1.25rem;">{{ $link->slug }}</h3>
-                            <p style="margin: 0 0 1.5rem; opacity: 0.8; font-size: 0.9rem;">Welcome to my links</p>
+                            <p style="margin: 0 0 1.5rem; opacity: 0.8; font-size: 0.9rem;">{{ t('welcome_to_links') }}</p>
                             <div style="background: #3b82f6; color: white; padding: 12px 20px; border-radius: 8px; margin-bottom: 10px; font-size: 0.9rem;">
-                                <i class="fas fa-link" style="margin-right: 8px;"></i>Sample Button
+                                <i class="fas fa-link" style="margin-{{ isRTL() ? 'left' : 'right' }}: 8px;"></i>{{ t('button_label') }}
                             </div>
                             <div style="background: #3b82f6; color: white; padding: 12px 20px; border-radius: 8px; font-size: 0.9rem;">
-                                <i class="fas fa-star" style="margin-right: 8px;"></i>Another Button
+                                <i class="fas fa-star" style="margin-{{ isRTL() ? 'left' : 'right' }}: 8px;"></i>{{ t('button_label') }}
                             </div>
                         </div>
                     </div>
                 </div>
                 
                 <button type="submit" class="btn btn-primary">
-                    <i class="fas fa-save"></i>Update Settings
+                    <i class="fas fa-save"></i>{{ t('update_settings') }}
                 </button>
             </form>
         </div>
@@ -1395,60 +1074,60 @@
         <!-- Buttons Card -->
         <div class="card">
             <div class="card-header">
-                <h4><i class="fas fa-link"></i>Manage Buttons</h4>
+                <h4><i class="fas fa-link"></i>{{ t('manage_buttons') }}</h4>
             </div>
             
             <div class="button-form">
-                <h5><i class="fas fa-plus"></i>Add New Button</h5>
+                <h5><i class="fas fa-plus"></i>{{ t('add_new_button') }}</h5>
                 
                 <div class="button-presets">
-                    <div class="preset-button" data-label="Instagram" data-icon="fab fa-instagram" data-url="https://instagram.com/">
+                    <div class="preset-button" data-label="{{ t('instagram') }}" data-icon="fab fa-instagram" data-url="https://instagram.com/">
                         <i class="fab fa-instagram"></i>
-                        <span>Instagram</span>
+                        <span>{{ t('instagram') }}</span>
                     </div>
-                    <div class="preset-button" data-label="Facebook" data-icon="fab fa-facebook-f" data-url="https://facebook.com/">
+                    <div class="preset-button" data-label="{{ t('facebook') }}" data-icon="fab fa-facebook-f" data-url="https://facebook.com/">
                         <i class="fab fa-facebook-f"></i>
-                        <span>Facebook</span>
+                        <span>{{ t('facebook') }}</span>
                     </div>
-                    <div class="preset-button" data-label="Twitter" data-icon="fab fa-twitter" data-url="https://twitter.com/">
+                    <div class="preset-button" data-label="{{ t('twitter') }}" data-icon="fab fa-twitter" data-url="https://twitter.com/">
                         <i class="fab fa-twitter"></i>
-                        <span>Twitter</span>
+                        <span>{{ t('twitter') }}</span>
                     </div>
-                    <div class="preset-button" data-label="YouTube" data-icon="fab fa-youtube" data-url="https://youtube.com/">
+                    <div class="preset-button" data-label="{{ t('youtube') }}" data-icon="fab fa-youtube" data-url="https://youtube.com/">
                         <i class="fab fa-youtube"></i>
-                        <span>YouTube</span>
+                        <span>{{ t('youtube') }}</span>
                     </div>
-                    <div class="preset-button" data-label="TikTok" data-icon="fab fa-tiktok" data-url="https://tiktok.com/">
+                    <div class="preset-button" data-label="{{ t('tiktok') }}" data-icon="fab fa-tiktok" data-url="https://tiktok.com/">
                         <i class="fab fa-tiktok"></i>
-                        <span>TikTok</span>
+                        <span>{{ t('tiktok') }}</span>
                     </div>
-                    <div class="preset-button" data-label="WhatsApp" data-icon="fab fa-whatsapp" data-url="https://wa.me/">
+                    <div class="preset-button" data-label="{{ t('whatsapp') }}" data-icon="fab fa-whatsapp" data-url="https://wa.me/">
                         <i class="fab fa-whatsapp"></i>
-                        <span>WhatsApp</span>
+                        <span>{{ t('whatsapp') }}</span>
                     </div>
-                    <div class="preset-button" data-label="Menu" data-icon="fas fa-utensils" data-url="">
+                    <div class="preset-button" data-label="{{ t('menu') }}" data-icon="fas fa-utensils" data-url="">
                         <i class="fas fa-utensils"></i>
-                        <span>Menu</span>
+                        <span>{{ t('menu') }}</span>
                     </div>
-                    <div class="preset-button" data-label="Location" data-icon="fas fa-map-marker-alt" data-url="https://maps.google.com/">
+                    <div class="preset-button" data-label="{{ t('location') }}" data-icon="fas fa-map-marker-alt" data-url="https://maps.google.com/">
                         <i class="fas fa-map-marker-alt"></i>
-                        <span>Location</span>
+                        <span>{{ t('location') }}</span>
                     </div>
-                    <div class="preset-button" data-label="Website" data-icon="fas fa-globe" data-url="https://">
+                    <div class="preset-button" data-label="{{ t('website') }}" data-icon="fas fa-globe" data-url="https://">
                         <i class="fas fa-globe"></i>
-                        <span>Website</span>
+                        <span>{{ t('website') }}</span>
                     </div>
-                    <div class="preset-button" data-label="Phone" data-icon="fas fa-phone" data-url="tel:">
+                    <div class="preset-button" data-label="{{ t('phone') }}" data-icon="fas fa-phone" data-url="tel:">
                         <i class="fas fa-phone"></i>
-                        <span>Phone</span>
+                        <span>{{ t('phone') }}</span>
                     </div>
-                    <div class="preset-button" data-label="Email" data-icon="fas fa-envelope" data-url="mailto:">
+                    <div class="preset-button" data-label="{{ t('email') }}" data-icon="fas fa-envelope" data-url="mailto:">
                         <i class="fas fa-envelope"></i>
-                        <span>Email</span>
+                        <span>{{ t('email') }}</span>
                     </div>
-                    <div class="preset-button" data-label="Promotion" data-icon="fas fa-percent" data-url="" data-promotion="true">
+                    <div class="preset-button" data-label="{{ t('promotion') }}" data-icon="fas fa-percent" data-url="" data-promotion="true">
                         <i class="fas fa-percent"></i>
-                        <span>Promotion</span>
+                        <span>{{ t('promotion') }}</span>
                     </div>
                 </div>
                 
@@ -1456,58 +1135,58 @@
                     @csrf
                     <div class="button-form-grid">
                         <div class="form-group">
-                            <label>Button Label</label>
-                            <input type="text" name="label" class="form-control" id="labelInput" placeholder="Enter button text" required>
+                            <label>{{ t('button_label') }}</label>
+                            <input type="text" name="label" class="form-control" id="labelInput" placeholder="{{ t('button_label') }}" required>
                         </div>
                         <div class="form-group">
-                            <label>URL or Link</label>
+                            <label>{{ t('url_link') }}</label>
                             <input type="url" name="url" class="form-control" id="urlInput" placeholder="https://example.com">
                         </div>
                         <div class="form-group">
-                            <label>Upload File (Optional)</label>
+                            <label>{{ t('upload_file') }}</label>
                             <input type="file" name="file" class="form-control" accept=".pdf,.doc,.docx,.jpg,.png,.gif">
                         </div>
                         <div class="form-group">
-                            <label>Order</label>
+                            <label>{{ t('order') }}</label>
                             <input type="number" name="order" class="form-control" placeholder="0" value="0" min="0">
                         </div>
                     </div>
                     
                     <div class="promotion-settings" id="promotionSettings">
-                        <h6><i class="fas fa-star"></i>Promotion Settings</h6>
+                        <h6><i class="fas fa-star"></i>{{ t('promotion_settings') }}</h6>
                         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
                             <div class="form-group">
-                                <label>Promotion Color</label>
+                                <label>{{ t('promotion_color') }}</label>
                                 <input type="color" name="promotion_color" class="color-input" value="#ef4444" style="height: 50px;">
                             </div>
                             <div class="form-group">
-                                <label>Discount Label</label>
+                                <label>{{ t('discount_label') }}</label>
                                 <input type="text" name="discount_label" class="form-control" placeholder="50% OFF" maxlength="15">
                             </div>
                         </div>
                         <div class="checkbox-group">
                             <input type="checkbox" name="is_promotion" id="isPromotionCheck" value="1" style="transform: scale(1.2);">
-                            <label for="isPromotionCheck"><strong>✨ Make this a PROMOTION button ✨</strong></label>
+                            <label for="isPromotionCheck"><strong>{{ t('make_promotion') }}</strong></label>
                         </div>
                     </div>
                     
                     <input type="hidden" name="icon_class" id="iconInput">
                     <button type="submit" class="btn btn-success">
-                        <i class="fas fa-plus"></i>Add Button
+                        <i class="fas fa-plus"></i>{{ t('add_button') }}
                     </button>
                 </form>
             </div>
             
             @if($link->buttons->count() > 0)
                 <div style="margin-bottom: 1rem;">
-                    <p style="color: #64748b; font-size: 0.875rem;"><i class="fas fa-info-circle"></i> Drag and drop buttons to reorder them</p>
+                    <p style="color: #64748b; font-size: 0.875rem;"><i class="fas fa-info-circle"></i> {{ t('drag_reorder') }}</p>
                 </div>
                 
                 <div class="buttons-list" id="buttonsList">
                     @foreach($link->buttons as $button)
                         <div class="button-item {{ !$button->is_active ? 'inactive' : '' }}{{ $button->is_promotion ? ' promotion-item' : '' }}" 
                              data-button-id="{{ $button->id }}" tabindex="0">
-                            <div class="drag-handle" title="Drag to reorder">
+                            <div class="drag-handle" title="{{ t('drag_reorder') }}">
                                 <i class="fas fa-grip-vertical"></i>
                             </div>
                             <div class="button-info">
@@ -1516,35 +1195,35 @@
                                     <div class="button-label">
                                         {{ $button->label }}
                                         @if($button->is_promotion)
-                                            <span class="promotion-badge">PROMO</span>
+                                            <span class="promotion-badge">{{ t('promotion') }}</span>
                                         @endif
                                         @if($button->discount_label)
                                             <span class="discount-badge-small">{{ $button->discount_label }}</span>
                                         @endif
                                     </div>
                                     <div class="button-url">{{ $button->url ?: $button->file_filename }}</div>
-                                    <div class="button-stats">{{ $button->click_count ?: 0 }} clicks</div>
+                                    <div class="button-stats">{{ $button->click_count ?: 0 }} {{ t('clicks') }}</div>
                                 </div>
                             </div>
                             <div class="button-actions">
                                 <button class="btn btn-edit" onclick="editButton({{ $button->id }})">
-                                    <i class="fas fa-edit"></i>Edit
+                                    <i class="fas fa-edit"></i>{{ t('edit') }}
                                 </button>
                                 <form method="POST" action="{{ route('user.toggle-button', $button->id) }}" style="display: inline;">
                                     @csrf
                                     <button type="submit" class="btn btn-toggle">
                                         @if($button->is_active)
-                                            <i class="fas fa-eye-slash"></i>Hide
+                                            <i class="fas fa-eye-slash"></i>{{ t('hide') }}
                                         @else
-                                            <i class="fas fa-eye"></i>Show
+                                            <i class="fas fa-eye"></i>{{ t('show') }}
                                         @endif
                                     </button>
                                 </form>
-                                <form method="POST" action="{{ route('user.delete-button', $button->id) }}" style="display: inline;" onsubmit="return confirm('Are you sure?')">
+                                <form method="POST" action="{{ route('user.delete-button', $button->id) }}" style="display: inline;" onsubmit="return confirm('{{ t('order_error') }}?')">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="btn btn-danger">
-                                        <i class="fas fa-trash"></i>Delete
+                                        <i class="fas fa-trash"></i>{{ t('delete') }}
                                     </button>
                                 </form>
                             </div>
@@ -1554,7 +1233,7 @@
             @else
                 <div class="alert alert-info">
                     <i class="fas fa-info-circle"></i>
-                    <span>No buttons created yet. Add your first button above!</span>
+                    <span>{{ t('no_buttons') }}</span>
                 </div>
             @endif
         </div>
@@ -1565,57 +1244,57 @@
 <div id="editModal" class="modal">
     <div class="modal-content">
         <div class="modal-header">
-            <h3><i class="fas fa-edit"></i>Edit Button</h3>
+            <h3><i class="fas fa-edit"></i>{{ t('edit_button') }}</h3>
             <button class="close" onclick="closeEditModal()">&times;</button>
         </div>
         <form method="POST" id="editButtonForm" enctype="multipart/form-data">
             @csrf
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
                 <div class="form-group">
-                    <label>Button Label</label>
+                    <label>{{ t('button_label') }}</label>
                     <input type="text" name="label" class="form-control" id="editLabelInput" required>
                 </div>
                 <div class="form-group">
-                    <label>URL or Link</label>
+                    <label>{{ t('url_link') }}</label>
                     <input type="url" name="url" class="form-control" id="editUrlInput">
                 </div>
                 <div class="form-group">
-                    <label>Icon Class</label>
+                    <label>{{ t('icon_class') }}</label>
                     <input type="text" name="icon_class" class="form-control" id="editIconInput" placeholder="fas fa-link">
                 </div>
                 <div class="form-group">
-                    <label>Order</label>
+                    <label>{{ t('order') }}</label>
                     <input type="number" name="order" class="form-control" id="editOrderInput" min="0">
                 </div>
             </div>
             
             <div class="form-group">
-                <label>Upload New File (Optional)</label>
+                <label>{{ t('upload_new_file') }}</label>
                 <input type="file" name="file" class="form-control" accept=".pdf,.doc,.docx,.jpg,.png,.gif">
             </div>
             
             <div class="promotion-settings" style="display: block; margin-top: 1.5rem;">
-                <h6><i class="fas fa-star"></i>Promotion Settings</h6>
+                <h6><i class="fas fa-star"></i>{{ t('promotion_settings') }}</h6>
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
                     <div class="form-group">
-                        <label>Promotion Color</label>
+                        <label>{{ t('promotion_color') }}</label>
                         <input type="color" name="promotion_color" id="editPromotionColorInput" class="color-input" value="#ef4444" style="height: 50px;">
                     </div>
                     <div class="form-group">
-                        <label>Discount Label</label>
+                        <label>{{ t('discount_label') }}</label>
                         <input type="text" name="discount_label" class="form-control" id="editDiscountLabelInput" placeholder="50% OFF" maxlength="15">
                     </div>
                 </div>
                 <div class="checkbox-group">
                     <input type="checkbox" name="is_promotion" id="editIsPromotionCheck" style="transform: scale(1.2);">
-                    <label for="editIsPromotionCheck"><strong>✨ Make this a PROMOTION button ✨</strong></label>
+                    <label for="editIsPromotionCheck"><strong>{{ t('make_promotion') }}</strong></label>
                 </div>
             </div>
             
             <div style="display: flex; gap: 1rem; justify-content: flex-end; margin-top: 2rem;">
-                <button type="button" class="btn btn-toggle" onclick="closeEditModal()">Cancel</button>
+                <button type="button" class="btn btn-toggle" onclick="closeEditModal()">{{ t('cancel') }}</button>
                 <button type="submit" class="btn btn-success">
-                    <i class="fas fa-save"></i>Update Button
+                    <i class="fas fa-save"></i>{{ t('update_button') }}
                 </button>
             </div>
         </form>
@@ -1645,7 +1324,7 @@ document.addEventListener('DOMContentLoaded', function() {
             if (this.dataset.promotion === 'true') {
                 promotionSettings.classList.add('show');
                 isPromotionCheck.checked = true;
-                labelInput.value = 'Special Offer';
+                labelInput.value = '{{ t('special_offer') }}';
                 document.querySelector('input[name="discount_label"]').value = '50% OFF';
             } else {
                 promotionSettings.classList.remove('show');
@@ -1700,124 +1379,37 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Container settings functionality
+    // Range input handlers
     const borderWidth = document.getElementById('borderWidth');
     const borderRadius = document.getElementById('borderRadius');
     const opacity = document.getElementById('opacity');
-    const borderWidthValue = document.getElementById('borderWidthValue');
-    const borderRadiusValue = document.getElementById('borderRadiusValue');
-    const opacityValue = document.getElementById('opacityValue');
 
-    function updatePreview() {
-        const container = document.getElementById('previewContainer');
-        const useContainer = document.getElementById('use_container_styling').checked;
-        const containerBg = document.querySelector('input[name="container_background"]').value;
-        const borderColor = document.querySelector('input[name="container_border_color"]').value;
-        const shadow = document.getElementById('container_shadow').checked;
-        const blur = document.getElementById('container_blur').checked;
-
-        if (useContainer) {
-            const opacityHex = Math.round(parseInt(opacity.value) * 2.55).toString(16).padStart(2, '0');
-            container.style.background = containerBg + opacityHex;
-            container.style.border = `${borderWidth.value}px solid ${borderColor}`;
-            container.style.borderRadius = `${borderRadius.value}px`;
-            container.style.boxShadow = shadow ? '0 8px 32px rgba(0, 0, 0, 0.1)' : 'none';
-            container.style.backdropFilter = blur ? 'blur(10px)' : 'none';
-        } else {
-            container.style.background = 'rgba(255, 255, 255, 0.95)';
-            container.style.border = 'none';
-            container.style.borderRadius = '20px';
-            container.style.boxShadow = '0 8px 32px rgba(0, 0, 0, 0.1)';
-            container.style.backdropFilter = 'blur(10px)';
-        }
-    }
-
-    // Range input handlers
     if (borderWidth) {
         borderWidth.addEventListener('input', function() {
-            borderWidthValue.textContent = this.value + 'px';
-            updatePreview();
+            document.getElementById('borderWidthValue').textContent = this.value + 'px';
         });
     }
 
     if (borderRadius) {
         borderRadius.addEventListener('input', function() {
-            borderRadiusValue.textContent = this.value + 'px';
-            updatePreview();
+            document.getElementById('borderRadiusValue').textContent = this.value + 'px';
         });
     }
 
     if (opacity) {
         opacity.addEventListener('input', function() {
-            opacityValue.textContent = this.value + '%';
-            updatePreview();
+            document.getElementById('opacityValue').textContent = this.value + '%';
         });
     }
-
-    // Container styling toggle
-    const containerToggle = document.getElementById('use_container_styling');
-    const containerSettings = document.getElementById('container-settings');
     
-    function toggleContainerSettings() {
-        if (containerToggle && containerSettings) {
-            if (containerToggle.checked) {
-                containerSettings.style.opacity = '1';
-                containerSettings.style.pointerEvents = 'auto';
-            } else {
-                containerSettings.style.opacity = '0.5';
-                containerSettings.style.pointerEvents = 'none';
-            }
-            updatePreview();
-        }
-    }
-
-    if (containerToggle) {
-        containerToggle.addEventListener('change', toggleContainerSettings);
-    }
-    
-    // Color input handlers
-    document.querySelectorAll('input[type="color"]').forEach(input => {
-        input.addEventListener('change', updatePreview);
-    });
-    
-    // Checkbox handlers
-    document.querySelectorAll('input[type="checkbox"]').forEach(input => {
-        input.addEventListener('change', updatePreview);
-    });
-
-    // Initialize container settings
-    toggleContainerSettings();
-    updatePreview();
-    
-    // Enhanced drag and drop functionality
-    function initializeDragAndDrop() {
-        const buttonsList = document.getElementById('buttonsList');
-        
-        if (!buttonsList) {
-            console.warn('buttonsList element not found');
-            return;
-        }
-        
-        // Check if Sortable library is loaded
-        if (typeof Sortable === 'undefined') {
-            console.error('Sortable library not loaded');
-            showNotification('Drag and drop functionality unavailable', 'error');
-            return;
-        }
-        
-        console.log('Initializing Sortable with', buttonsList.children.length, 'items');
-        
-        // Destroy existing sortable instance if it exists
-        if (buttonsList.sortable) {
-            buttonsList.sortable.destroy();
-        }
-        
-        const sortable = new Sortable(buttonsList, {
+    // Drag and drop functionality
+    const buttonsList = document.getElementById('buttonsList');
+    if (buttonsList && typeof Sortable !== 'undefined') {
+        new Sortable(buttonsList, {
             animation: 300,
             ghostClass: 'sortable-ghost',
             chosenClass: 'sortable-chosen',
             dragClass: 'sortable-drag',
-            // Allow dragging from entire button area
             forceFallback: false,
             fallbackTolerance: 3,
             scroll: true,
@@ -1828,210 +1420,17 @@ document.addEventListener('DOMContentLoaded', function() {
             delayOnTouchStart: true,
             touchStartThreshold: 3,
             
-            // Prevent dragging when clicking on interactive elements
             filter: '.btn, .button-actions, .button-actions *, form, input, button',
             
-            onStart: function(evt) {
-                console.log('Drag started:', evt.item.dataset.buttonId);
-                evt.item.style.opacity = '0.7';
-                document.body.classList.add('dragging');
-                
-                // Add visual feedback
-                evt.item.style.transform = 'scale(1.02) rotate(2deg)';
-                evt.item.style.boxShadow = '0 8px 32px rgba(0, 0, 0, 0.2)';
-            },
-            
-            onMove: function(evt, originalEvent) {
-                // Allow move unless target is a button action
-                const target = originalEvent.target;
-                if (target.closest('.button-actions')) {
-                    return false;
-                }
-                return true;
-            },
-            
             onEnd: function(evt) {
-                console.log('Drag ended. Old index:', evt.oldIndex, 'New index:', evt.newIndex);
-                evt.item.style.opacity = '';
-                evt.item.style.transform = '';
-                evt.item.style.boxShadow = '';
-                document.body.classList.remove('dragging');
+                if (evt.oldIndex === evt.newIndex) return;
                 
-                // Only proceed if the item actually moved
-                if (evt.oldIndex === evt.newIndex) {
-                    console.log('Item did not move, skipping reorder');
-                    return;
-                }
+                const buttonIds = Array.from(buttonsList.children)
+                    .map(item => item.dataset.buttonId)
+                    .filter(id => id);
                 
-                // Add loading state
-                evt.item.classList.add('loading');
-                
-                // Get all button IDs in their new order
-                const buttonIds = [];
-                const items = buttonsList.querySelectorAll('[data-button-id]');
-                
-                items.forEach(item => {
-                    const buttonId = item.dataset.buttonId;
-                    if (buttonId) {
-                        buttonIds.push(buttonId);
-                    }
-                });
-                
-                console.log('New order:', buttonIds);
-                
-                if (buttonIds.length === 0) {
-                    console.warn('No button IDs found for reordering');
-                    showNotification('No buttons to reorder', 'error');
-                    evt.item.classList.remove('loading');
-                    return;
-                }
-                
-                // Send AJAX request to update order
-                updateButtonOrder(buttonIds, evt.item);
+                updateButtonOrder(buttonIds);
             }
-        });
-        
-        // Store the sortable instance
-        buttonsList.sortable = sortable;
-        console.log('Sortable initialized successfully');
-        
-        // Add keyboard support for accessibility
-        addKeyboardSupport();
-    }
-    
-    // Add keyboard support for drag and drop
-    function addKeyboardSupport() {
-        const buttonItems = document.querySelectorAll('.button-item');
-        
-        buttonItems.forEach((item, index) => {
-            item.addEventListener('keydown', function(e) {
-                if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
-                    e.preventDefault();
-                    
-                    const currentIndex = Array.from(this.parentNode.children).indexOf(this);
-                    let targetIndex;
-                    
-                    if (e.key === 'ArrowUp' && currentIndex > 0) {
-                        targetIndex = currentIndex - 1;
-                    } else if (e.key === 'ArrowDown' && currentIndex < this.parentNode.children.length - 1) {
-                        targetIndex = currentIndex + 1;
-                    }
-                    
-                    if (targetIndex !== undefined) {
-                        const targetElement = this.parentNode.children[targetIndex];
-                        if (e.key === 'ArrowUp') {
-                            this.parentNode.insertBefore(this, targetElement);
-                        } else {
-                            this.parentNode.insertBefore(this, targetElement.nextSibling);
-                        }
-                        
-                        // Update order
-                        const buttonIds = Array.from(this.parentNode.children)
-                            .map(item => item.dataset.buttonId)
-                            .filter(id => id);
-                        
-                        updateButtonOrder(buttonIds, this);
-                        this.focus();
-                    }
-                }
-            });
-        });
-    }
-    
-    // Function to update button order via AJAX
-    function updateButtonOrder(buttonIds, itemElement = null) {
-        const csrfToken = document.querySelector('meta[name="csrf-token"]');
-        
-        if (!csrfToken) {
-            console.error('CSRF token not found');
-            showNotification('Security token missing. Please refresh the page.', 'error');
-            if (itemElement) itemElement.classList.remove('loading');
-            return;
-        }
-        
-        console.log('Sending reorder request with IDs:', buttonIds);
-        
-        // Show loading state
-        showNotification('Updating button order...', 'info');
-        
-        fetch('/user/reorder-buttons', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': csrfToken.getAttribute('content'),
-                'Accept': 'application/json',
-                'X-Requested-With': 'XMLHttpRequest'
-            },
-            body: JSON.stringify({ 
-                button_ids: buttonIds 
-            })
-        })
-        .then(response => {
-            console.log('Response status:', response.status);
-            
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-            
-            return response.json();
-        })
-        .then(data => {
-            console.log('Response data:', data);
-            
-            if (data.success) {
-                showNotification('Button order updated successfully!', 'success');
-                
-                // Add success visual feedback
-                if (itemElement) {
-                    itemElement.style.borderColor = '#10b981';
-                    setTimeout(() => {
-                        if (itemElement.style) {
-                            itemElement.style.borderColor = '';
-                        }
-                    }, 2000);
-                }
-            } else {
-                throw new Error(data.message || 'Failed to update order');
-            }
-        })
-        .catch(error => {
-            console.error('Reorder error:', error);
-            showNotification('Error updating button order: ' + error.message, 'error');
-            
-            // Add error visual feedback
-            if (itemElement) {
-                itemElement.style.borderColor = '#ef4444';
-                setTimeout(() => {
-                    if (itemElement.style) {
-                        itemElement.style.borderColor = '';
-                    }
-                }, 3000);
-            }
-            
-            // Optionally reload the page on error to reset the order
-            setTimeout(() => {
-                if (confirm('There was an error updating the order. Would you like to reload the page to reset?')) {
-                    window.location.reload();
-                }
-            }, 3000);
-        })
-        .finally(() => {
-            if (itemElement) {
-                itemElement.classList.remove('loading');
-            }
-        });
-    }
-    
-    // Call initialization when DOM is ready
-    initializeDragAndDrop();
-    
-    // Re-initialize drag and drop when new buttons are added
-    const buttonForm = document.getElementById('buttonForm');
-    if (buttonForm) {
-        buttonForm.addEventListener('submit', function() {
-            setTimeout(() => {
-                initializeDragAndDrop();
-            }, 1000); // Wait for potential page reload/redirect
         });
     }
     
@@ -2039,10 +1438,6 @@ document.addEventListener('DOMContentLoaded', function() {
     window.editButton = function(buttonId) {
         const editModal = document.getElementById('editModal');
         editModal.style.display = 'block';
-        
-        // Add loading state to modal
-        const modalContent = editModal.querySelector('.modal-content');
-        modalContent.classList.add('loading');
         
         fetch(`{{ url('user/edit-button') }}/${buttonId}`, {
             headers: {
@@ -2063,10 +1458,7 @@ document.addEventListener('DOMContentLoaded', function() {
         })
         .catch(error => {
             console.error('Error:', error);
-            showNotification('Error loading button data', 'error');
-        })
-        .finally(() => {
-            modalContent.classList.remove('loading');
+            showNotification('{{ t('order_error') }}', 'error');
         });
     };
     
@@ -2075,17 +1467,51 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('editModal').style.display = 'none';
     };
     
-    // Click outside modal to close
-    window.onclick = function(event) {
-        const modal = document.getElementById('editModal');
-        if (event.target == modal) {
-            modal.style.display = 'none';
+    // Update button order
+    function updateButtonOrder(buttonIds) {
+        const csrfToken = document.querySelector('meta[name="csrf-token"]');
+        
+        if (!csrfToken) {
+            console.error('CSRF token not found');
+            showNotification('{{ t('order_error') }}', 'error');
+            return;
         }
-    };
+        
+        showNotification('{{ t('updating_order') }}', 'info');
+        
+        fetch('/user/reorder-buttons', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': csrfToken.getAttribute('content'),
+                'Accept': 'application/json',
+                'X-Requested-With': 'XMLHttpRequest'
+            },
+            body: JSON.stringify({ 
+                button_ids: buttonIds 
+            })
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (data.success) {
+                showNotification('{{ t('order_updated') }}', 'success');
+            } else {
+                throw new Error(data.message || '{{ t('order_error') }}');
+            }
+        })
+        .catch(error => {
+            console.error('Reorder error:', error);
+            showNotification('{{ t('order_error') }}', 'error');
+        });
+    }
     
-    // Enhanced notification system
+    // Notification system
     function showNotification(message, type = 'info') {
-        // Remove existing notifications
         const existing = document.querySelectorAll('.notification');
         existing.forEach(notif => notif.remove());
         
@@ -2094,7 +1520,7 @@ document.addEventListener('DOMContentLoaded', function() {
         notification.style.cssText = `
             position: fixed;
             top: 20px;
-            right: 20px;
+            {{ isRTL() ? 'left' : 'right' }}: 20px;
             z-index: 9999;
             padding: 1rem 1.5rem;
             border-radius: 12px;
@@ -2104,7 +1530,7 @@ document.addEventListener('DOMContentLoaded', function() {
             background: ${type === 'success' ? 'linear-gradient(135deg, #10b981, #059669)' : 
                         type === 'error' ? 'linear-gradient(135deg, #ef4444, #dc2626)' :
                         'linear-gradient(135deg, #3b82f6, #1d4ed8)'};
-            transform: translateX(100%);
+            transform: translateX({{ isRTL() ? '-' : '' }}100%);
             transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             max-width: 350px;
             word-wrap: break-word;
@@ -2114,22 +1540,20 @@ document.addEventListener('DOMContentLoaded', function() {
             <div style="display: flex; align-items: center;">
                 <i class="fas fa-${type === 'success' ? 'check-circle' : 
                                  type === 'error' ? 'exclamation-triangle' : 
-                                 'info-circle'}" style="margin-right: 0.75rem; font-size: 1.25rem;"></i>
+                                 'info-circle'}" style="margin-{{ isRTL() ? 'left' : 'right' }}: 0.75rem; font-size: 1.25rem;"></i>
                 <span>${message}</span>
             </div>
         `;
         
         document.body.appendChild(notification);
         
-        // Animate in
         setTimeout(() => {
             notification.style.transform = 'translateX(0)';
         }, 100);
         
-        // Auto-dismiss after 4 seconds
         setTimeout(() => {
             if (document.body.contains(notification)) {
-                notification.style.transform = 'translateX(100%)';
+                notification.style.transform = 'translateX({{ isRTL() ? '-' : '' }}100%)';
                 setTimeout(() => {
                     if (document.body.contains(notification)) {
                         document.body.removeChild(notification);
@@ -2138,9 +1562,8 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }, 4000);
         
-        // Click to dismiss
         notification.addEventListener('click', () => {
-            notification.style.transform = 'translateX(100%)';
+            notification.style.transform = 'translateX({{ isRTL() ? '-' : '' }}100%)';
             setTimeout(() => {
                 if (document.body.contains(notification)) {
                     document.body.removeChild(notification);
@@ -2149,38 +1572,15 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
-    // Make notification function globally available
     window.showNotification = showNotification;
     
-    // Add touch support enhancements
-    if ('ontouchstart' in window) {
-        // Add touch-specific enhancements
-        document.body.classList.add('touch-device');
-        
-        // Improve touch scrolling
-        document.addEventListener('touchstart', function() {}, {passive: true});
-        document.addEventListener('touchmove', function() {}, {passive: true});
-    }
-    
-    // Handle orientation changes
-    window.addEventListener('orientationchange', function() {
-        setTimeout(() => {
-            // Recalculate layouts after orientation change
-            const event = new Event('resize');
-            window.dispatchEvent(event);
-        }, 100);
-    });
-    
-    // Progressive Web App support
-    if ('serviceWorker' in navigator) {
-        window.addEventListener('load', function() {
-            navigator.serviceWorker.register('/sw.js').then(function(registration) {
-                console.log('ServiceWorker registration successful');
-            }).catch(function(err) {
-                console.log('ServiceWorker registration failed');
-            });
-        });
-    }
+    // Click outside modal to close
+    window.onclick = function(event) {
+        const modal = document.getElementById('editModal');
+        if (event.target == modal) {
+            modal.style.display = 'none';
+        }
+    };
 });
 </script>
 @endsection

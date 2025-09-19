@@ -1,11 +1,12 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{ isRTL() ? 'ar' : 'en' }}" dir="{{ isRTL() ? 'rtl' : 'ltr' }}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ $link->slug }} - Links</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
     <style>
         :root {
@@ -26,7 +27,7 @@
         }
 
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            font-family: {{ isRTL() ? "'Noto Sans Arabic', 'Arial'" : "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto" }}, sans-serif;
             background: var(--background-color);
             color: var(--text-color);
             line-height: 1.6;
@@ -37,6 +38,51 @@
             justify-content: flex-start;
             padding: 20px;
             position: relative;
+            direction: {{ isRTL() ? 'rtl' : 'ltr' }};
+            text-align: {{ isRTL() ? 'right' : 'center' }};
+        }
+
+        /* Language Switcher for Public Page */
+        .language-switcher {
+            position: fixed;
+            top: 20px;
+            {{ isRTL() ? 'left' : 'right' }}: 20px;
+            z-index: 1000;
+            display: flex;
+            gap: 0.5rem;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 0.5rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+        }
+
+        .language-btn {
+            padding: 0.4rem 0.8rem;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-color);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.8rem;
+            transition: all 0.3s ease;
+            min-width: 40px;
+            text-align: center;
+        }
+
+        .language-btn:hover {
+            border-color: var(--primary-color);
+            color: var(--primary-color);
+            background: rgba(255, 255, 255, 0.3);
+            text-decoration: none;
+        }
+
+        .language-btn.active {
+            background: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
         }
 
         @if($link->background_filename && $link->use_background_image)
@@ -169,6 +215,8 @@
             overflow: visible;
             opacity: 0;
             animation: fadeInUp 0.6s ease-out forwards;
+            text-align: center;
+            direction: {{ isRTL() ? 'rtl' : 'ltr' }};
         }
 
         /* Button Styles */
@@ -220,7 +268,7 @@
         .discount-badge {
             position: absolute;
             top: -15px;
-            right: -15px;
+            {{ isRTL() ? 'left' : 'right' }}: -15px;
             background: linear-gradient(135deg, #ffeb3b, #ffc107);
             color: #d84315;
             font-size: 0.8rem;
@@ -246,7 +294,7 @@
         }
 
         .btn-link i {
-            margin-right: 12px;
+            margin-{{ isRTL() ? 'left' : 'right' }}: 12px;
             font-size: 1.2rem;
             min-width: 20px;
         }
@@ -301,6 +349,18 @@
                 padding: 15px;
             }
 
+            .language-switcher {
+                top: 10px;
+                {{ isRTL() ? 'left' : 'right' }}: 10px;
+                padding: 0.4rem;
+            }
+
+            .language-btn {
+                padding: 0.3rem 0.6rem;
+                font-size: 0.75rem;
+                min-width: 35px;
+            }
+
             .container {
                 max-width: 100%;
                 @if($link->use_container_styling && $link->background_filename && $link->use_background_image)
@@ -340,7 +400,7 @@
             }
 
             .btn-link i {
-                margin-right: 10px;
+                margin-{{ isRTL() ? 'left' : 'right' }}: 10px;
                 font-size: 1.1rem;
             }
 
@@ -350,7 +410,7 @@
 
             .discount-badge {
                 top: -12px;
-                right: -12px;
+                {{ isRTL() ? 'left' : 'right' }}: -12px;
                 font-size: 0.7rem;
                 padding: 6px 10px;
                 min-width: 50px;
@@ -384,10 +444,49 @@
                 transition-duration: 0.01ms !important;
             }
         }
+
+        /* RTL specific adjustments */
+        .rtl .btn-link {
+            direction: rtl;
+            text-align: center;
+        }
+
+        .rtl .btn-link i {
+            margin-left: 12px;
+            margin-right: 0;
+        }
+
+        /* Enhanced Arabic typography */
+        .rtl {
+            font-family: 'Noto Sans Arabic', 'Arial', sans-serif;
+            line-height: 1.8;
+        }
+
+        .rtl .profile-title {
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        .rtl .btn-link {
+            font-weight: 500;
+            letter-spacing: 0.3px;
+        }
     </style>
 </head>
 
-<body>
+<body class="{{ isRTL() ? 'rtl' : '' }}">
+    <!-- Language Switcher -->
+    <div class="language-switcher">
+        <a href="{{ route('language.switch', 'en') }}?redirect={{ urlencode(request()->fullUrl()) }}" 
+           class="language-btn {{ !isRTL() ? 'active' : '' }}">
+            EN
+        </a>
+        <a href="{{ route('language.switch', 'ar') }}?redirect={{ urlencode(request()->fullUrl()) }}" 
+           class="language-btn {{ isRTL() ? 'active' : '' }}">
+            عربي
+        </a>
+    </div>
+
     <div class="container">
         <!-- Profile Section -->
         <div class="profile">
@@ -398,7 +497,7 @@
             @endif
             
             <h1 class="profile-title">{{ $link->slug }}</h1>
-            <p class="profile-subtitle">Welcome to my links</p>
+            <p class="profile-subtitle">{{ t('welcome_to_links') }}</p>
         </div>
 
         <!-- Buttons Section -->
@@ -428,7 +527,7 @@
 
         <!-- Footer -->
         <div class="footer">
-            <p>Powered by <a href="#" target="_blank">NotifySmartLink</a></p>
+            <p>{{ t('powered_by') }} <a href="#" target="_blank">NotifySmartLink</a></p>
         </div>
     </div>
 
@@ -474,6 +573,20 @@
             }
         `;
         document.head.appendChild(style);
+
+        // Language switcher functionality
+        document.querySelectorAll('.language-btn').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                // Add loading state
+                this.style.opacity = '0.7';
+                this.style.pointerEvents = 'none';
+            });
+        });
+
+        // Add touch-friendly interactions for mobile
+        if ('ontouchstart' in window) {
+            document.body.classList.add('touch-device');
+        }
     </script>
 </body>
 </html>
