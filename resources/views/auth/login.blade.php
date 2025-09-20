@@ -1,11 +1,6 @@
-<?php
-
-// 1. Fix login.blade.php - Replace the static text with translations
-?>
 @extends('layouts.app')
 
-@section('title', '{{ t("login") }} - NotifySmartLink')
-
+@section('title', t('login') . ' - NotifySmartLink')
 @section('content')
 <div style="max-width: 400px; margin: 2rem auto; background: white; padding: 2rem; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
     <div style="text-align: center; margin-bottom: 2rem;">
