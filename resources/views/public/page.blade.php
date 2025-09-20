@@ -502,27 +502,32 @@
 
         <!-- Buttons Section -->
         <div class="buttons-container">
-            @foreach($buttons as $btn)
-                <a href="{{ route('track-click', $btn->id) }}" 
-                   class="btn-link{{ $btn->is_promotion ? ' promotion' : '' }}"
-                   target="_blank"
-                   rel="noopener noreferrer"
-                   aria-label="{{ $btn->label }}">
-                    @if($btn->is_promotion && $btn->discount_label)
-                        <div class="discount-badge">{{ $btn->discount_label }}</div>
+    @foreach($buttons as $btn)
+        <a href="{{ route('track-click', $btn->id) }}" 
+           class="btn-link{{ $btn->is_promotion ? ' promotion' : '' }}"
+           target="_blank"
+           rel="noopener noreferrer"
+           aria-label="{{ $btn->label }}">
+            @if($btn->is_promotion && $btn->discount_label)
+                <div class="discount-badge">{{ $btn->discount_label }}</div>
+            @endif
+            @if($btn->icon_class)
+                <i class="{{ $btn->icon_class }}" aria-hidden="true"></i>
+            @endif
+            <span>
+                @if($btn->is_promotion)
+                    🔥 {{ $btn->label }} 🔥
+                @else
+                    {{-- Use current page language to translate preset button labels --}}
+                    @if(in_array(strtolower($btn->label), ['instagram', 'facebook', 'twitter', 'youtube', 'tiktok', 'whatsapp', 'menu', 'location', 'website', 'phone', 'email', 'promotion']))
+                        {{ t(strtolower($btn->label)) }}
+                    @else
+                        {{ $btn->label }}
                     @endif
-                    @if($btn->icon_class)
-                        <i class="{{ $btn->icon_class }}" aria-hidden="true"></i>
-                    @endif
-                    <span>
-                        @if($btn->is_promotion)
-                            🔥 {{ $btn->label }} 🔥
-                        @else
-                            {{ $btn->label }}
-                        @endif
-                    </span>
-                </a>
-            @endforeach
+                @endif
+            </span>
+        </a>
+    @endforeach
         </div>
 
         <!-- Footer -->

@@ -10,8 +10,16 @@ class SetLocale
 {
     public function handle(Request $request, Closure $next)
     {
-        $locale = TranslationService::getCurrentLocale();
-        app()->setLocale($locale);
+        // Get locale from various sources
+        $locale = $request->get('lang') ?? 
+                  session('locale') ?? 
+                  $request->cookie('locale') ?? 
+                  config('app.locale', 'en');
+        
+        if (in_array($locale, ['en', 'ar'])) {
+            app()->setLocale($locale);
+            TranslationService::setLocale($locale);
+        }
         
         return $next($request);
     }
